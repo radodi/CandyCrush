@@ -1,16 +1,16 @@
 var gameboard = [['R','G','G','B'], 
-				 ['B','O','G','G'], 
-				 ['P','O','B','P'], 
+				 ['G','O','G','G'], 
+				 ['P','G','B','P'], 
 				 ['Y','B','Y','O']],
-cell = [0, 1],
-direction = 'D';
+cell = [1, 0],
+direction = 'R';
 var xLen = gameboard[0].length;
 var yLen = gameboard.length;
 // checkDirection - Checks for a valid move direction
 function checkDirection () {
 	switch(direction){
 		case 'L':
-			if (cell[0]>0) {
+			if (cell[1]>0) {
 				return true;
 			}
 			break;
@@ -20,7 +20,7 @@ function checkDirection () {
 			}
 			break;
 		case 'U':
-			if (cell[1]>0) {
+			if (cell[0]>0) {
 				return true;
 			}
 			break;
@@ -75,14 +75,16 @@ function checkUp(){
 	if (cell[0] < 1) {
 		return 0;
 	} else {
-		var num = 0;
+		var num = 0, n=1;
 		for (var i = cell[0]; i > 0; i--) {
-			if (gameboard[cell[0]][cell[1]] === gameboard[(cell[0]-i)][cell[1]]) {
+			if (gameboard[cell[0]][cell[1]] === gameboard[(cell[0]-n)][cell[1]]) {
 				num++;
+				n++;
 			} else {
 				return num;
 			}
 		}
+		return num;
 	}
 }
 // checkDown - Checks for matching down until reach a different value
@@ -91,14 +93,16 @@ function checkDown(){
 	if (cell[0] === yLen-1) {
 		return 0;
 	} else {
-		var num = 0;
+		var num = 0, n=1;
 		for (var i = cell[0]; i < yLen; i++) {
-			if (gameboard[cell[0]][cell[1]] === gameboard[(cell[0]+i)][cell[1]]) {
+			if (gameboard[cell[0]][cell[1]] === gameboard[(cell[0]+n)][cell[1]]) {
 				num++;
+				n++;
 			} else {
 				return num;
 			}
 		}
+		return num;
 	}
 }
 // checkLeft - Checks for matching left until reach a different value
@@ -107,14 +111,16 @@ function checkLeft(){
 	if (cell[1] < 1) {
 		return 0;
 	} else {
-		var num = 0;
+		var num = 0, n=1;
 		for (var i = cell[1]; i > 0; i--) {
-			if (gameboard[cell[0]][cell[1]] === gameboard[cell[0]][(cell[1]-i)]) {
+			if (gameboard[cell[0]][cell[1]] === gameboard[cell[0]][(cell[1]-n)]) {
 				num++;
+				n++;
 			} else {
 				return num;
 			}
 		}
+		return num;
 	}
 }
 // checkRight - Checks for matching right until reach a different value
@@ -123,19 +129,22 @@ function checkRight(){
 	if (cell[1] === xLen-1) {
 		return 0;
 	} else {
-		var num = 0;
+		var num = 0, n=1;
 		for (var i = cell[1]; i < xLen; i++) {
-			if (gameboard[cell[0]][cell[1]] === gameboard[cell[0]][(cell[1]+i)]) {
+			if (gameboard[cell[0]][cell[1]] === gameboard[cell[0]][(cell[1]+n)]) {
 				num++;
+				n++;
 			} else {
 				return num;
 			}
 		}
+		return num;
 	}
 }
 function candyCrush(gameboard, cell, direction) {
 	if (checkDirection()) {
 		doMove();
+		var xMatches, yMatches;
 		console.log('***');
 		console.log('Up: '+checkUp());
 		console.log('***');
@@ -144,6 +153,13 @@ function candyCrush(gameboard, cell, direction) {
 		console.log('Left: '+checkLeft());
 		console.log('***');
 		console.log('Right: '+checkRight());
+		if (checkUp() + checkDown() > 1) {
+			yMatches = true;
+		}
+		if (checkLeft() + checkRight() > 1) {
+			xMatches = true;
+		}
+		console.log(yMatches, xMatches);
 	}
 }
 candyCrush(gameboard, cell, direction);
