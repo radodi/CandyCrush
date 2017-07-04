@@ -72,7 +72,7 @@ function doMove(){
 // checkUp - Checks for matching up until reach a different value
 // and returns a number of matches
 function checkUp(){
-	if (cell[0]<1) {
+	if (cell[0] < 1) {
 		return 0;
 	} else {
 		var num = 0;
@@ -101,14 +101,49 @@ function checkDown(){
 		}
 	}
 }
-
+// checkLeft - Checks for matching left until reach a different value
+// and returns a number of matches
+function checkLeft(){
+	if (cell[1] < 1) {
+		return 0;
+	} else {
+		var num = 0;
+		for (var i = cell[1]; i > 0; i--) {
+			if (gameboard[cell[0]][cell[1]] === gameboard[cell[0]][(cell[1]-i)]) {
+				num++;
+			} else {
+				return num;
+			}
+		}
+	}
+}
+// checkRight - Checks for matching right until reach a different value
+// and returns a number of matches
+function checkRight(){
+	if (cell[1] === xLen-1) {
+		return 0;
+	} else {
+		var num = 0;
+		for (var i = cell[1]; i < xLen; i++) {
+			if (gameboard[cell[0]][cell[1]] === gameboard[cell[0]][(cell[1]+i)]) {
+				num++;
+			} else {
+				return num;
+			}
+		}
+	}
+}
 function candyCrush(gameboard, cell, direction) {
 	if (checkDirection()) {
 		doMove();
-		console.log('***')
+		console.log('***');
 		console.log('Up: '+checkUp());
-		console.log('***')
+		console.log('***');
 		console.log('Down: '+checkDown());
+		console.log('***');
+		console.log('Left: '+checkLeft());
+		console.log('***');
+		console.log('Right: '+checkRight());
 	}
 }
 candyCrush(gameboard, cell, direction);
