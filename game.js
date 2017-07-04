@@ -69,9 +69,46 @@ function doMove(){
 	console.log('--------------');
 	console.log(gameboard);
 }
+// checkUp - Checks for matching up until reach a different value
+// and returns a number of matches
+function checkUp(){
+	if (cell[0]<1) {
+		return 0;
+	} else {
+		var num = 0;
+		for (var i = cell[0]; i > 0; i--) {
+			if (gameboard[cell[0]][cell[1]] === gameboard[(cell[0]-i)][cell[1]]) {
+				num++;
+			} else {
+				return num;
+			}
+		}
+	}
+}
+// checkDown - Checks for matching down until reach a different value
+// and returns a number of matches
+function checkDown(){
+	if (cell[0] === yLen-1) {
+		return 0;
+	} else {
+		var num = 0;
+		for (var i = cell[0]; i < yLen; i++) {
+			if (gameboard[cell[0]][cell[1]] === gameboard[(cell[0]+i)][cell[1]]) {
+				num++;
+			} else {
+				return num;
+			}
+		}
+	}
+}
+
 function candyCrush(gameboard, cell, direction) {
 	if (checkDirection()) {
 		doMove();
+		console.log('***')
+		console.log('Up: '+checkUp());
+		console.log('***')
+		console.log('Down: '+checkDown());
 	}
 }
 candyCrush(gameboard, cell, direction);
