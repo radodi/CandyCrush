@@ -7,7 +7,7 @@ direction = 'D';
 var xLen = gameboard[0].length;
 var yLen = gameboard.length;
 // checkDirection - Checks for a valid move direction
-function checkDirection (gameboard, cell, direction) {
+function checkDirection () {
 	switch(direction){
 		case 'L':
 			if (cell[0]>0) {
@@ -31,9 +31,47 @@ function checkDirection (gameboard, cell, direction) {
 			break;
 	}
 }
+//doMove() - Changes the positions (values) of two elements in the specified direction
+// and set new cell value
+function doMove(){
+	var temp;
+	console.log(cell);
+	console.log('--------------');
+	console.log(gameboard);
+	switch(direction){
+		case 'L':
+			temp = gameboard[cell[0]][(cell[1]-1)];
+			gameboard[cell[0]][(cell[1]-1)] = gameboard[cell[0]][cell[1]];
+			gameboard[cell[0]][cell[1]] = temp;
+			cell = [cell[0], (cell[1]-1)];
+			break;
+		case 'R':
+			temp = gameboard[cell[0]][(cell[1]+1)];
+			gameboard[cell[0]][(cell[1]+1)] = gameboard[cell[0]][cell[1]];
+			gameboard[cell[0]][cell[1]] = temp;
+			cell = [cell[0], (cell[1]+1)];
+			break;
+		case 'U':
+			temp = gameboard[(cell[0]-1)][cell[1]];
+			gameboard[(cell[0]-1)][cell[1]] = gameboard[cell[0]][cell[1]];
+			gameboard[cell[0]][cell[1]] = temp;
+			cell = [(cell[0]-1), cell[1]];
+			break;
+		case 'D':
+			temp = gameboard[(cell[0]+1)][cell[1]];
+			gameboard[(cell[0]+1)][cell[1]] = gameboard[cell[0]][cell[1]];
+			gameboard[cell[0]][cell[1]] = temp;
+			cell = [(cell[0]+1), cell[1]];
+			break;
+	}
+	console.log('- - - - - - - - - - - - - -');
+	console.log(cell);
+	console.log('--------------');
+	console.log(gameboard);
+}
 function candyCrush(gameboard, cell, direction) {
-	if (checkDirection(gameboard, cell, direction)) {
-		
+	if (checkDirection()) {
+		doMove();
 	}
 }
 candyCrush(gameboard, cell, direction);
