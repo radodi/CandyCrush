@@ -162,14 +162,22 @@ function matches(gameboard, startCell, valuesArr){
 			matchesArr.push([(startCell[0]+l), startCell[1]]);
 		}
 	}
-	console.log(matchesArr);
+	return matchesArr;
 }
 
 function candyCrush(gameboard, cell, direction) {
 	if (checkDirection()) {
 		doMove();
-		matches(gameboard, newCell,[checkUp(newCell),checkDown(newCell), checkLeft(newCell), checkRight(newCell)]);
-
+		var matchesArr = matches(gameboard, newCell,[checkUp(newCell),checkDown(newCell), checkLeft(newCell), checkRight(newCell)]);
+		console.log(matchesArr);
+		if (matchesArr.length <3) {
+			matchesArr = matches(gameboard, cell,[checkUp(cell),checkDown(cell), checkLeft(cell), checkRight(cell)]);
+			if (matchesArr.length > 2) {
+				console.log(true);
+			}
+		} else {
+			console.log(true);
+		}
 	}
 }
 candyCrush(gameboard, cell, direction);
