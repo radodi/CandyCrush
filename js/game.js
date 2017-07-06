@@ -1,10 +1,10 @@
 var gameboard = [["R","G","G","B"], 
-				 ["G","O","G","G"], 
-				 ["P","G","B","P"], 
+				 ["B","O","G","G"], 
+				 ["P","O","B","P"], 
 				 ["Y","B","Y","O"]],
-cell = [1, 0],
+cell = [0, 1],
 newCell,
-direction = 'R';
+direction = 'D';
 var xLen = gameboard[0].length;
 var yLen = gameboard.length;
 // checkDirection - Checks for a valid move direction
@@ -180,7 +180,7 @@ function candyCrush(gameboard, cell, direction) {
 		}
 	}
 }
-candyCrush(gameboard, cell, direction);
+// candyCrush(gameboard, cell, direction);
 // generateBoard - Gnerate GameBoard in HTML Doccument
 function generateBoard(){
 	$('#container').css('width', xLen*100+20+'px');
@@ -192,5 +192,33 @@ function generateBoard(){
 	}
 }
 $(document).ready(function(){
-	generateBoard();	
+	generateBoard();
+	$('.col').click(function(){
+		$('.col').removeClass('selected');
+		$(this).addClass('selected');
+	});
+	$(document).keydown(function(e){
+		var selected = $('.selected');
+		if(selected.length === 0){
+			alert("Select Cocktail to move!");
+		} else {
+			var y = $('.selected').parent().attr('id').split('row_').slice(-1);
+			var x = $('.selected').attr('id').split('col_').slice(-1);
+			cell = [y[0],x[0]];
+		}
+		switch (e.keyCode) {
+		case 37:
+         	direction = 'L';
+         	break;
+		case 39:
+         	direction = 'R';
+			break;
+		case 38:
+         	direction = 'U';
+         	break;
+		case 40:
+			direction = 'D';
+			break;
+    }
+	});
 });
