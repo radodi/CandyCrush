@@ -1,10 +1,10 @@
 var gameboard = [["R","G","G","B"], 
- ["B","O","G","G"], 
- ["P","O","B","P"], 
- ["Y","B","Y","O"]],
-cell = [0, 1],
+				 ["G","O","G","G"], 
+				 ["P","G","B","P"], 
+				 ["Y","B","Y","O"]],
+cell = [1, 0],
 newCell,
-direction = 'D';
+direction = 'R';
 var xLen = gameboard[0].length;
 var yLen = gameboard.length;
 // checkDirection - Checks for a valid move direction
@@ -141,41 +141,35 @@ function checkRight(arg){
 		return num;
 	}
 }
+// matches - The function checks for more than 2 horizontal and vertical matching values
+// and puts the coordinates of the values in a new array.
+function matches(gameboard, startCell, valuesArr){
+	console.log(valuesArr);
+	var matchesArr=[startCell];
+	if (valuesArr[0]+valuesArr[1] > 1) {
+		for (var i = valuesArr[0]; i > 0; i--) {
+			matchesArr.push([startCell[0],(startCell[1]-i)]);
+		}
+		for (var j = valuesArr[0]; j > 0; j--) {
+			matchesArr.push([startCell[0],(startCell[1]+j)]);
+		}
+	}
+	if (valuesArr[2]+valuesArr[3] > 1) {
+		for (var k = valuesArr[2]; k > 0; k--) {
+			matchesArr.push([(startCell[0]-k), startCell[1]]);
+		}
+		for (var l = valuesArr[3]; l > 0; l--) {
+			matchesArr.push([(startCell[0]+l), startCell[1]]);
+		}
+	}
+	console.log(matchesArr);
+}
+
 function candyCrush(gameboard, cell, direction) {
 	if (checkDirection()) {
 		doMove();
-		var xMatches=false, yMatches=false;
-		console.log('***');
-		console.log('Up: '+checkUp(cell));
-		console.log('***');
-		console.log('Down: '+checkDown(cell));
-		console.log('***');
-		console.log('Left: '+checkLeft(cell));
-		console.log('***');
-		console.log('Right: '+checkRight(cell));
-		if (checkUp(cell) + checkDown(cell) > 1) {
-			yMatches = true;
-		}
-		if (checkLeft(cell) + checkRight(cell) > 1) {
-			xMatches = true;
-		}
-		console.log(xMatches, yMatches);
-		xMatches=false; yMatches=false;
-		console.log('***');
-		console.log('Up: '+checkUp(newCell));
-		console.log('***');
-		console.log('Down: '+checkDown(newCell));
-		console.log('***');
-		console.log('Left: '+checkLeft(newCell));
-		console.log('***');
-		console.log('Right: '+checkRight(newCell));
-		if (checkUp(newCell) + checkDown(newCell) > 1) {
-			yMatches = true;
-		}
-		if (checkLeft(newCell) + checkRight(newCell) > 1) {
-			xMatches = true;
-		}
-		console.log(xMatches, yMatches);
+		matches(gameboard, newCell,[checkUp(newCell),checkDown(newCell), checkLeft(newCell), checkRight(newCell)]);
+
 	}
 }
 candyCrush(gameboard, cell, direction);
