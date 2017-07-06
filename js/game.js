@@ -181,3 +181,16 @@ function candyCrush(gameboard, cell, direction) {
 	}
 }
 candyCrush(gameboard, cell, direction);
+// generateBoard - Gnerate GameBoard in HTML Doccument
+function generateBoard(){
+	$('#container').css('width', xLen*100+20+'px');
+	for (var i = 0; i < yLen; i++) {
+		$('#container').append($('<div class="row" id="row_'+i+'">'));
+		for (var j = 0; j < xLen; j++) {
+			$('#row_'+i).append($('<div class="col" id="col_'+j+'">').css("background-image", "url(img/"+gameboard[i][j]+".png)"));
+		}
+	}
+}
+$(document).ready(function(){
+	generateBoard();	
+});

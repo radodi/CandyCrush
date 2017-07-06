@@ -1,1 +1,20 @@
 @charset "UTF-8";
+#container {
+	font-size: 0px;
+	margin: 0 auto;
+}
+.row {
+	background-color: #C7C7C7;
+	border-left: 10px solid #A1A1A1;
+	border-right: 10px solid #A1A1A1;
+	border-top: 10px solid #A1A1A1;
+	border-bottom: 10px solid #A1A1A1;
+	box
+}
+.col {
+	width: 100px;
+	height: 100px;
+	display: inline-block;
+	background-size: contain;
+	background-repeat: no-repeat;
+}
