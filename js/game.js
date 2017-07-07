@@ -1,11 +1,11 @@
-var gameboard = [["Y","O","Y","O"],
-				 ["R","G","G","B"], 
-				 ["G","O","G","G"], 
-				 ["P","G","B","P"], 
-				 ["Y","B","Y","O"]],
+var gameboard = [["R","G","G","B"], 
+ ["B","O","G","G"], 
+ ["P","O","B","P"], 
+ ["Y","B","Y","O"]],
 cell,
 newCell,
-direction;
+direction,
+points=0;
 var xLen = gameboard[0].length;
 var yLen = gameboard.length;
 // checkDirection - Checks for a valid move direction
@@ -188,27 +188,29 @@ function candyCrush(gameboard, cell, direction) {
 		var mArr = matches(gameboard, newCell,[checkLeft(newCell),checkRight(newCell,xLen),checkUp(newCell),checkDown(newCell, yLen)]);
 		if(mArr.length>2){
 			for (var i = 0; i < mArr.length; i++) {
-				$('#'+mArr[i][0]+''+mArr[i][1]).animate({opacity:0},5);
+				$('#'+mArr[i][0]+''+mArr[i][1]).animate({opacity:0},600);
 			}
-		 setTimeout(reGenerateMatrix(mArr),3000);
+			showStar(mArr.length);
+		 reGenerateMatrix(mArr);
 		}
 
 		mArr = matches(gameboard, cell,[checkLeft(cell),checkRight(cell,xLen),checkUp(cell),checkDown(cell, yLen)]);
 		if(mArr.length>2){
 			for (var j = 0; j < mArr.length; j++) {
-				$('#'+mArr[j][0]+''+mArr[j][1]).animate({opacity:0},5);
+				$('#'+mArr[j][0]+''+mArr[j][1]).animate({opacity:0},600);
 			}
-		 setTimeout(reGenerateMatrix(mArr),3000);
+			showStar(mArr.length);
+		 reGenerateMatrix(mArr);
 		}
 	}
 }
 // candyCrush(gameboard, cell, direction);
 // generateBoard - Gnerate GameBoard in HTML Doccument
 function generateBoard(){
-	$('#container').css('width', xLen*100+20+'px');
+	$('#game-container').css('width', xLen*80+20+'px');
 	$('.row').remove();
 	for (var i = 0; i < yLen; i++) {
-		$('#container').append($('<div class="row" id="row_'+i+'">'));
+		$('#game-container').append($('<div class="row" id="row_'+i+'">'));
 		for (var j = 0; j < xLen; j++) {
 			$('#row_'+i).append($('<div class="col" id="'+i+''+j+'">').css("background-image", "url(img/"+gameboard[i][j]+".png)"));
 		}
@@ -216,13 +218,36 @@ function generateBoard(){
 }
 //reGenerateMatrix - Generate new values for matched cells and change background
 function reGenerateMatrix(arg){
-	var chars='BGOPRY';
+	setTimeout(function(){
+		var chars='BGOPRY',char, oldChar;
 	for (var i = 0; i < arg.length; i++) {
 			gameboard[arg[i][0]][arg[i][1]] = chars[Math.floor(Math.random() * 5) + 0];
 			console.log(arg[i][0]+''+arg[i][1]);
 			$('#'+arg[i][0]+''+arg[i][1]).css('background-image','url(img/'+gameboard[arg[i][0]][arg[i][1]]+'.png'+')');
 			$('#'+arg[i][0]+''+arg[i][1]).animate({'opacity':1},600);
 	}
+	for (var j = 0; j < arg.length; j++) {
+		mArr = matches(gameboard, arg[j],[checkLeft(arg[j]),checkRight(arg[j],xLen),checkUp(arg[j]),checkDown(arg[j], yLen)]);
+		console.log(mArr);
+		if(mArr.length > 2){
+			for (var k = 0; k < mArr.length; k++) {
+				$('#'+mArr[k][0]+''+mArr[k][1]).animate({opacity:0},600);
+			}
+			showStar(mArr.length);
+		 reGenerateMatrix(mArr);
+		}
+	}
+	},1000);
+}
+//Show Points Star and calculate points
+function showStar(p){
+		points+=p;
+setTimeout(function(){
+	$('#star').css({'bottom':'200px'});
+	$('#star').animate({'bottom':'600px'},1500).delay(200).animate({'bottom':'200px'},600);
+	$('#star').text(p);
+	$('#points').text(points);
+}, 500);
 }
 $(document).ready(function(){
 	generateBoard();
@@ -231,6 +256,7 @@ $(document).ready(function(){
 		$(this).addClass('selected');
 	});
 	$(document).keydown(function(e){
+		e.preventDefault();
 		var selected = $('.selected');
 		switch (e.keyCode) {
 			case 37:

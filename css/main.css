@@ -1,23 +1,110 @@
 @charset "UTF-8";
-#container {
-	font-size: 0px;
+html, body, div, ul, li, p, h3 {
+	margin: 0;
+	padding: 0;
+	font-family: "Pacifico", serif;
+}
+html {
+	font-size: 62.5%;
+}
+body {
+	background-image: url(../img/brick_bg.png);
+	color: #ffefd9;
+}
+.wrapper {
+	overflow: hidden;
+	max-width: 80%;
 	margin: 0 auto;
 }
+#score-container {
+	float: left;
+	margin: 50px;
+	background-color: #282828;
+	border: 20px solid #9f6b46;
+	border-radius: 20px;
+	width: 200px;
+	height: 300px;
+	text-align: center;
+	font-size: 2.2rem;
+	text-align: left;
+}
+#score-container h3 {
+	font-size: 3.2rem;
+	text-align: center;
+	margin: 24px 0;
+}
+#score-container p {
+	margin: 15px 20px;
+}
+#game-container {
+	position: relative;
+	top: 50px;
+	float: right;
+	font-size: 0px;
+	margin: 30px 50px 0 auto;
+}
 .row {
-	background-color: #C7C7C7;
-	border-left: 10px solid #A1A1A1;
-	border-right: 10px solid #A1A1A1;
-	border-top: 10px solid #A1A1A1;
-	border-bottom: 10px solid #A1A1A1;
-	box
+	background-color: #84583a;
+	border-left: 10px solid #a06b47;
+	border-right: 10px solid #a06b47;
+	border-top: 10px solid #a06b47;
 }
 .col {
-	width: 100px;
-	height: 100px;
+	width: 80px;
+	height: 80px;
 	display: inline-block;
 	background-size: contain;
 	background-repeat: no-repeat;
 }
 .selected {
 	background-color: #B5B5B5;
+}
+.footer {
+	background-color: #604e3d;
+	background-image: url(../img/brick_bg.png);
+	background-repeat: repeat-x;
+	font-size:2.6rem;
+	line-height: 5.6rem;
+	text-align: center; 
+	position: relative;
+}
+.footer .bar {
+	width: 90%;
+	height: 410px;
+	background-image:  url(../img/bar_bg.png);
+	background-repeat: repeat-x;
+	margin: 0 auto;
+	z-index: 3;
+
+}
+.footer .left {
+	float: left;
+	position: relative;
+	left: -30px;
+	background-image: url(../img/bar_left_bg.png);
+	width: 340px;
+	height: 410px;
+}
+.footer .right {
+	float: right;
+	position: relative;
+	right: -30px;
+	background-image: url(../img/bar_right_bg.png);
+	width: 340px;
+	height: 410px;
+}
+#star {
+	/*display: none;*/
+	width: 256px;
+	height: 256px;
+	background-image:  url(../img/star.png);
+	background-size: contain;
+	line-height: 256px;
+	text-align: center;
+	z-index: -2;
+	position: absolute;
+	bottom:200px;
+	left: 35%;
+	font-size: 15rem;
+
 }
