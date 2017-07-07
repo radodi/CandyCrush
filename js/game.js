@@ -1,40 +1,40 @@
 var gameboard = [["R","G","G","B"], 
- ["B","O","G","G"], 
- ["P","O","B","P"], 
- ["Y","B","Y","O"]],
+["B","O","G","G"], 
+["P","O","B","P"], 
+["Y","B","Y","O"]],
 cell,
 newCell,
 direction,
-points=0;
+points=0, moves=0, b=0;
 var xLen = gameboard[0].length;
 var yLen = gameboard.length;
 // checkDirection - Checks for a valid move direction
 function checkDirection () {
 	switch(direction){
 		case 'L':
-			if (cell[1]>0) {
-				newCell=[cell[0],(cell[1]-1)];
-				return true;
-			}
-			break;
+		if (cell[1]>0) {
+			newCell=[cell[0],(cell[1]-1)];
+			return true;
+		}
+		break;
 		case 'R':
-			if (cell[1] < gameboard[cell[0]].length-1) {
-				newCell=[cell[0],(cell[1]+1)];
-				return true;
-			}
-			break;
+		if (cell[1] < gameboard[cell[0]].length-1) {
+			newCell=[cell[0],(cell[1]+1)];
+			return true;
+		}
+		break;
 		case 'U':
-			if (cell[0]>0) {
-				newCell=[(cell[0]-1),cell[1]];
-				return true;
-			}
-			break;
+		if (cell[0]>0) {
+			newCell=[(cell[0]-1),cell[1]];
+			return true;
+		}
+		break;
 		case 'D':
-			if (cell[0] < gameboard.length-1) {
-				newCell=[(cell[0]+1),cell[1]];
-				return true;
-			}
-			break;
+		if (cell[0] < gameboard.length-1) {
+			newCell=[(cell[0]+1),cell[1]];
+			return true;
+		}
+		break;
 	}
 }
 //doMove() - Changes the positions (values) of two elements in the specified direction
@@ -47,33 +47,33 @@ function doMove(){
 	// console.log(gameboard);
 	switch(direction){
 		case 'L':
-			v1 = gameboard[cell[0]][cell[1]];
-			v2 = gameboard[cell[0]][cell[1]-1];
-			gameboard[cell[0]][cell[1]] = v2;
-			gameboard[cell[0]][cell[1]-1] = v1;
-			break;
+		v1 = gameboard[cell[0]][cell[1]];
+		v2 = gameboard[cell[0]][cell[1]-1];
+		gameboard[cell[0]][cell[1]] = v2;
+		gameboard[cell[0]][cell[1]-1] = v1;
+		break;
 		case 'R':
-			v1 = gameboard[cell[0]][cell[1]];
-			v2 = gameboard[cell[0]][cell[1]+1];
-			gameboard[cell[0]][cell[1]] = v2;
-			gameboard[cell[0]][cell[1]+1] = v1;
-			break;
+		v1 = gameboard[cell[0]][cell[1]];
+		v2 = gameboard[cell[0]][cell[1]+1];
+		gameboard[cell[0]][cell[1]] = v2;
+		gameboard[cell[0]][cell[1]+1] = v1;
+		break;
 		case 'U':
-			v1 = gameboard[cell[0]][cell[1]];
-			v2 = gameboard[cell[0]-1][cell[1]];
-			gameboard[cell[0]][cell[1]] = v2;
-			gameboard[cell[0]-1][cell[1]] = v1;
-			break;
+		v1 = gameboard[cell[0]][cell[1]];
+		v2 = gameboard[cell[0]-1][cell[1]];
+		gameboard[cell[0]][cell[1]] = v2;
+		gameboard[cell[0]-1][cell[1]] = v1;
+		break;
 		case 'D':
-			v1 = gameboard[cell[0]][cell[1]];
-			v2 = gameboard[cell[0]+1][cell[1]];
-			gameboard[cell[0]][cell[1]] = v2;
-			gameboard[cell[0]+1][cell[1]] = v1;
-			break;
+		v1 = gameboard[cell[0]][cell[1]];
+		v2 = gameboard[cell[0]+1][cell[1]];
+		gameboard[cell[0]][cell[1]] = v2;
+		gameboard[cell[0]+1][cell[1]] = v1;
+		break;
 	}
 	// console.log('--------------');
 	// console.log(gameboard);
-	 return gameboard;
+	return gameboard;
 }
 // checkUp - Checks for matching up until reach a different value
 // and returns a number of matches
@@ -103,7 +103,7 @@ function checkDown(arg, yLen){
 		for (var i = arg[0]; i < yLen-1; i++) {
 			if (gameboard[arg[0]][arg[1]] == gameboard[arg[0]+n][arg[1]]) {
 				num++;
-			console.log('n'+n);
+				console.log('n'+n);
 				n++;
 			} else {
 				return num;
@@ -180,6 +180,7 @@ function matches(gameboard, startCell, valuesArr){
 
 function candyCrush(gameboard, cell, direction) {
 	if (checkDirection()) {
+		var boom = true;
 		$('#'+newCell[0]+''+newCell[1]).css('background-image','url(img/'+gameboard[cell[0]][cell[1]]+'.png'+')');
 		$('#'+cell[0]+''+cell[1]).css('background-image','url(img/'+gameboard[newCell[0]][newCell[1]]+'.png'+')');
 		$('.col').removeClass('selected');
@@ -191,17 +192,22 @@ function candyCrush(gameboard, cell, direction) {
 				$('#'+mArr[i][0]+''+mArr[i][1]).animate({opacity:0},600);
 			}
 			showStar(mArr.length);
-		 reGenerateMatrix(mArr);
-		}
-
+			reGenerateMatrix(mArr);
+			boom = false;
+		} 
 		mArr = matches(gameboard, cell,[checkLeft(cell),checkRight(cell,xLen),checkUp(cell),checkDown(cell, yLen)]);
 		if(mArr.length>2){
 			for (var j = 0; j < mArr.length; j++) {
 				$('#'+mArr[j][0]+''+mArr[j][1]).animate({opacity:0},600);
 			}
 			showStar(mArr.length);
-		 reGenerateMatrix(mArr);
+			reGenerateMatrix(mArr);
+			boom = false;
 		}
+		if(boom){
+			bomb();
+		}
+		countMoves();
 	}
 }
 // candyCrush(gameboard, cell, direction);
@@ -220,35 +226,54 @@ function generateBoard(){
 function reGenerateMatrix(arg){
 	setTimeout(function(){
 		var chars='BGOPRY',char, oldChar;
-	for (var i = 0; i < arg.length; i++) {
+		for (var i = 0; i < arg.length; i++) {
 			gameboard[arg[i][0]][arg[i][1]] = chars[Math.floor(Math.random() * 5) + 0];
 			console.log(arg[i][0]+''+arg[i][1]);
 			$('#'+arg[i][0]+''+arg[i][1]).css('background-image','url(img/'+gameboard[arg[i][0]][arg[i][1]]+'.png'+')');
 			$('#'+arg[i][0]+''+arg[i][1]).animate({'opacity':1},600);
-	}
-	for (var j = 0; j < arg.length; j++) {
-		mArr = matches(gameboard, arg[j],[checkLeft(arg[j]),checkRight(arg[j],xLen),checkUp(arg[j]),checkDown(arg[j], yLen)]);
-		console.log(mArr);
-		if(mArr.length > 2){
-			for (var k = 0; k < mArr.length; k++) {
-				$('#'+mArr[k][0]+''+mArr[k][1]).animate({opacity:0},600);
-			}
-			showStar(mArr.length);
-		 reGenerateMatrix(mArr);
 		}
-	}
+		for (var j = 0; j < arg.length; j++) {
+			mArr = matches(gameboard, arg[j],[checkLeft(arg[j]),checkRight(arg[j],xLen),checkUp(arg[j]),checkDown(arg[j], yLen)]);
+			console.log(mArr);
+			if(mArr.length > 2){
+				for (var k = 0; k < mArr.length; k++) {
+					$('#'+mArr[k][0]+''+mArr[k][1]).animate({opacity:0},600);
+				}
+				showStar(mArr.length);
+				reGenerateMatrix(mArr);
+			}
+		}
 	},1000);
 }
 //Show Points Star and calculate points
 function showStar(p){
-		points+=p;
-setTimeout(function(){
-	$('#star').css({'bottom':'200px'});
-	$('#star').animate({'bottom':'600px'},1500).delay(200).animate({'bottom':'200px'},600);
-	$('#star').text(p);
-	$('#points').text(points);
-}, 500);
+	points+=p;
+	setTimeout(function(){
+		$('#star').css({'bottom':'200px'});
+		$('#star').animate({'bottom':'600px'},1500).delay(200).animate({'bottom':'200px'},300);
+		$('#star').text(p);
+		$('#points').text(points);
+	}, 500);
 }
+//countMoves - count moves and add value to frontend
+function countMoves(){
+	moves++;
+	$('#moves').text(moves);
+}
+//function Bomb - Counts the failed moves and subtracts points
+function bomb(){
+	b++;
+	var rnd = Math.floor(Math.random() * 3) + 1;
+	$('<span class="fa fa-bomb" id="b'+ b +'">')
+	.css({'font-size':'2.5rem', 'color':'#000','position':'fixed','top':'-2.5rem', 'left':'30%'})
+	.html('<span style="font-family: \'Gloria Hallelujah\', serif"> -'+rnd+'</span>').appendTo($('body'));
+	$('#b'+b).animate({'font-size':'25rem','top':'70vh'},1000).fadeOut(200);
+	setTimeout(function(){$('#b'+b).remove();},1200);
+	$('#bomb').text(b);
+	points-= rnd;
+	$('#points').text(points);
+}
+
 $(document).ready(function(){
 	generateBoard();
 	$('.col').click(function(){

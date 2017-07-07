@@ -12,6 +12,7 @@ body {
 	color: #ffefd9;
 }
 .wrapper {
+	position: relative;
 	overflow: hidden;
 	max-width: 80%;
 	margin: 0 auto;
@@ -31,10 +32,10 @@ body {
 #score-container h3 {
 	font-size: 3.2rem;
 	text-align: center;
-	margin: 24px 0;
+	margin: 20px 0;
 }
 #score-container p {
-	margin: 15px 20px;
+	margin: 10px 20px;
 }
 #game-container {
 	position: relative;
@@ -49,6 +50,11 @@ body {
 	border-right: 10px solid #a06b47;
 	border-top: 10px solid #a06b47;
 }
+#row_0 {
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px; 
+
+}
 .col {
 	width: 80px;
 	height: 80px;
@@ -57,7 +63,7 @@ body {
 	background-repeat: no-repeat;
 }
 .selected {
-	background-color: #B5B5B5;
+	background-color: #A06A45;
 }
 .footer {
 	background-color: #604e3d;
