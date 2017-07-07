@@ -1,6 +1,7 @@
-var gameboard = [["R","G","G","B"], 
-				 ["B","O","G","G"], 
-				 ["P","Y","B","P"], 
+var gameboard = [["Y","O","Y","O"],
+				 ["R","G","G","B"], 
+				 ["G","O","G","G"], 
+				 ["P","G","B","P"], 
 				 ["Y","B","Y","O"]],
 cell,
 newCell,
@@ -180,11 +181,20 @@ function matches(gameboard, startCell, valuesArr){
 function candyCrush(gameboard, cell, direction) {
 	if (checkDirection()) {
 		doMove(gameboard, cell, direction);
-		var mArr = matches(gameboard, newCell,[checkLeft(newCell),checkRight(newCell,xLen),checkUp(newCell),checkDown(newCell, yLen)]);
-		console.log(mArr);
-		mArr = matches(gameboard, cell,[checkLeft(cell),checkRight(cell,xLen),checkUp(cell),checkDown(cell, yLen)]);
-		console.log(mArr);
 		generateBoard();
+		var mArr = matches(gameboard, newCell,[checkLeft(newCell),checkRight(newCell,xLen),checkUp(newCell),checkDown(newCell, yLen)]);
+		if(mArr.length>2){
+			for (var i = 0; i < mArr.length; i++) {
+				$('#'+mArr[i][0]+''+mArr[i][1]).animate({opacity:0},1000, reGenerateMatrix([mArr[i][0],mArr[i][1]]));
+			}
+		}
+		mArr = matches(gameboard, cell,[checkLeft(cell),checkRight(cell,xLen),checkUp(cell),checkDown(cell, yLen)]);
+		if(mArr.length>2){
+			for (var j = 0; j < mArr.length; j++) {
+				$('#'+mArr[j][0]+''+mArr[j][1]).animate({opacity:0},1000, reGenerateMatrix([mArr[j][0],mArr[j][1]]));
+			}
+		}
+		console.log(mArr);
 	}
 }
 // candyCrush(gameboard, cell, direction);
@@ -195,9 +205,17 @@ function generateBoard(){
 	for (var i = 0; i < yLen; i++) {
 		$('#container').append($('<div class="row" id="row_'+i+'">'));
 		for (var j = 0; j < xLen; j++) {
-			$('#row_'+i).append($('<div class="col" id="col_'+j+'">').css("background-image", "url(img/"+gameboard[i][j]+".png)"));
+			$('#row_'+i).append($('<div class="col" id="'+i+''+j+'">').css("background-image", "url(img/"+gameboard[i][j]+".png)"));
 		}
 	}
+}
+function reGenerateMatrix(arg){
+	console.log('arg-'+arg);
+	for (var i = arg[0]; i >1; i--) {
+		var chars='BGOPRY';
+		gameboard[i][arg[1]]=chars[Math.floor(Math.random() * 5) + 0];
+	}
+	// generateBoard();
 }
 $(document).ready(function(){
 	generateBoard();
@@ -224,9 +242,8 @@ $(document).ready(function(){
 		if(selected.length === 0){
 			// alert("Select Cocktail to move!");
 		} else {
-			var y = $('.selected').parent().attr('id').split('row_').slice(-1);
-			var x = $('.selected').attr('id').split('col_').slice(-1);
-			cell = [parseInt(y[0]),parseInt(x[0])];
+			var x = $('.selected').attr('id').split('');
+			cell = [parseInt(x[0]),parseInt(x[1])];
 			candyCrush(gameboard, cell, direction);
 		}
 	});
