@@ -73,7 +73,7 @@ function doMove(){
 	}
 	// console.log('--------------');
 	// console.log(gameboard);
-	 return true;
+	 return gameboard;
 }
 // checkUp - Checks for matching up until reach a different value
 // and returns a number of matches
@@ -180,21 +180,26 @@ function matches(gameboard, startCell, valuesArr){
 
 function candyCrush(gameboard, cell, direction) {
 	if (checkDirection()) {
-		doMove(gameboard, cell, direction);
-		generateBoard();
+		$('#'+newCell[0]+''+newCell[1]).css('background-image','url(img/'+gameboard[cell[0]][cell[1]]+'.png'+')');
+		$('#'+cell[0]+''+cell[1]).css('background-image','url(img/'+gameboard[newCell[0]][newCell[1]]+'.png'+')');
+		$('.col').removeClass('selected');
+		
+		gameboard = doMove(gameboard, cell, direction);
 		var mArr = matches(gameboard, newCell,[checkLeft(newCell),checkRight(newCell,xLen),checkUp(newCell),checkDown(newCell, yLen)]);
 		if(mArr.length>2){
 			for (var i = 0; i < mArr.length; i++) {
-				$('#'+mArr[i][0]+''+mArr[i][1]).animate({opacity:0},1000, reGenerateMatrix([mArr[i][0],mArr[i][1]]));
+				$('#'+mArr[i][0]+''+mArr[i][1]).animate({opacity:0},5);
 			}
+		 setTimeout(reGenerateMatrix(mArr),3000);
 		}
+
 		mArr = matches(gameboard, cell,[checkLeft(cell),checkRight(cell,xLen),checkUp(cell),checkDown(cell, yLen)]);
 		if(mArr.length>2){
 			for (var j = 0; j < mArr.length; j++) {
-				$('#'+mArr[j][0]+''+mArr[j][1]).animate({opacity:0},1000, reGenerateMatrix([mArr[j][0],mArr[j][1]]));
+				$('#'+mArr[j][0]+''+mArr[j][1]).animate({opacity:0},5);
 			}
+		 setTimeout(reGenerateMatrix(mArr),3000);
 		}
-		console.log(mArr);
 	}
 }
 // candyCrush(gameboard, cell, direction);
@@ -209,13 +214,15 @@ function generateBoard(){
 		}
 	}
 }
+//reGenerateMatrix - Generate new values for matched cells and change background
 function reGenerateMatrix(arg){
-	console.log('arg-'+arg);
-	for (var i = arg[0]; i >1; i--) {
-		var chars='BGOPRY';
-		gameboard[i][arg[1]]=chars[Math.floor(Math.random() * 5) + 0];
+	var chars='BGOPRY';
+	for (var i = 0; i < arg.length; i++) {
+			gameboard[arg[i][0]][arg[i][1]] = chars[Math.floor(Math.random() * 5) + 0];
+			console.log(arg[i][0]+''+arg[i][1]);
+			$('#'+arg[i][0]+''+arg[i][1]).css('background-image','url(img/'+gameboard[arg[i][0]][arg[i][1]]+'.png'+')');
+			$('#'+arg[i][0]+''+arg[i][1]).animate({'opacity':1},600);
 	}
-	// generateBoard();
 }
 $(document).ready(function(){
 	generateBoard();
