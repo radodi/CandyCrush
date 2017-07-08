@@ -1,11 +1,11 @@
-var gameboard = [["R","G","G","B"], 
-["B","O","G","G"], 
-["P","O","B","P"], 
-["Y","B","Y","O"]],
+var gameboard = [["R","B","G","B","B","G","B"], 
+				 ["B","R","G","G","R","G","G"], 
+				 ["R","Y","B","P","Y","B","P"], 
+				 ["Y","B","Y","O","B","Y","O"]],
 cell,
 newCell,
 direction,
-points=0, moves=0, b=0;
+points=0, moves=0, b=0, sNum=0;
 var xLen = gameboard[0].length;
 var yLen = gameboard.length;
 // checkDirection - Checks for a valid move direction
@@ -192,7 +192,7 @@ function candyCrush(gameboard, cell, direction) {
 				$('#'+mArr[i][0]+''+mArr[i][1]).animate({opacity:0},600);
 			}
 			showStar(mArr.length);
-			reGenerateMatrix(mArr);
+			setTimeout(reGenerateMatrix(mArr),600);
 			boom = false;
 		} 
 		mArr = matches(gameboard, cell,[checkLeft(cell),checkRight(cell,xLen),checkUp(cell),checkDown(cell, yLen)]);
@@ -201,7 +201,7 @@ function candyCrush(gameboard, cell, direction) {
 				$('#'+mArr[j][0]+''+mArr[j][1]).animate({opacity:0},600);
 			}
 			showStar(mArr.length);
-			reGenerateMatrix(mArr);
+			setTimeout(reGenerateMatrix(mArr),600);
 			boom = false;
 		}
 		if(boom){
@@ -240,18 +240,20 @@ function reGenerateMatrix(arg){
 					$('#'+mArr[k][0]+''+mArr[k][1]).animate({opacity:0},600);
 				}
 				showStar(mArr.length);
-				reGenerateMatrix(mArr);
+				setTimeout(reGenerateMatrix(mArr),600);
 			}
 		}
 	},1000);
 }
 //Show Points Star and calculate points
 function showStar(p){
-	points+=p;
 	setTimeout(function(){
-		$('#star').css({'bottom':'200px'});
-		$('#star').animate({'bottom':'600px'},1500).delay(200).animate({'bottom':'200px'},300);
-		$('#star').text(p);
+		sNum++;
+		$('<div id="s'+sNum+'" class="star">').css({'top':'75vh'}).appendTo($('body'));
+		$('#s'+sNum).text(p);
+		$('#s'+sNum).animate({'top':'5vh'},1500).delay(200).animate({'top':'75vh'},300);
+		setTimeout(function(){$('.star').first().remove();},2000);
+		points+=p;
 		$('#points').text(points);
 	}, 500);
 }
@@ -264,11 +266,11 @@ function countMoves(){
 function bomb(){
 	b++;
 	var rnd = Math.floor(Math.random() * 3) + 1;
-	$('<span class="fa fa-bomb" id="b'+ b +'">')
+	$('<span class="fa fa-bomb boom" id="b'+ b +'">')
 	.css({'font-size':'2.5rem', 'color':'#000','position':'fixed','top':'-2.5rem', 'left':'30%'})
 	.html('<span style="font-family: \'Gloria Hallelujah\', serif"> -'+rnd+'</span>').appendTo($('body'));
 	$('#b'+b).animate({'font-size':'25rem','top':'70vh'},1000).fadeOut(200);
-	setTimeout(function(){$('#b'+b).remove();},1200);
+	setTimeout(function(){$('.boom').first().remove();},1200);
 	$('#bomb').text(b);
 	points-= rnd;
 	$('#points').text(points);
@@ -281,19 +283,22 @@ $(document).ready(function(){
 		$(this).addClass('selected');
 	});
 	$(document).keydown(function(e){
-		e.preventDefault();
 		var selected = $('.selected');
 		switch (e.keyCode) {
 			case 37:
+			e.preventDefault();
 			direction = 'L';
 			break;
 			case 39:
+			e.preventDefault();
 			direction = 'R';
 			break;
 			case 38:
+			e.preventDefault();
 			direction = 'U';
 			break;
 			case 40:
+			e.preventDefault();
 			direction = 'D';
 			break;
 		}

@@ -99,18 +99,18 @@ body {
 	width: 340px;
 	height: 410px;
 }
-#star {
-	/*display: none;*/
-	width: 256px;
-	height: 256px;
+.star {
+	width: 35vh;
+	height: 35vh;
 	background-image:  url(../img/star.png);
 	background-size: contain;
+	background-repeat: no-repeat;
 	line-height: 256px;
 	text-align: center;
 	z-index: -2;
-	position: absolute;
-	bottom:200px;
-	left: 35%;
+	position: fixed;
+	top: 75vh;
+	left: 250px;
 	font-size: 15rem;
 
 }
