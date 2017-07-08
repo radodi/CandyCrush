@@ -184,6 +184,7 @@ function candyCrush(gameboard, cell, direction) {
 		$('#'+newCell[0]+''+newCell[1]).css('background-image','url(img/'+gameboard[cell[0]][cell[1]]+'.png'+')');
 		$('#'+cell[0]+''+cell[1]).css('background-image','url(img/'+gameboard[newCell[0]][newCell[1]]+'.png'+')');
 		$('.col').removeClass('selected');
+		new Audio('sounds/move.wav').play();
 		
 		gameboard = doMove(gameboard, cell, direction);
 		var mArr = matches(gameboard, newCell,[checkLeft(newCell),checkRight(newCell,xLen),checkUp(newCell),checkDown(newCell, yLen)]);
@@ -206,8 +207,11 @@ function candyCrush(gameboard, cell, direction) {
 		}
 		if(boom){
 			bomb();
+			new Audio('sounds/boom.wav').play();
 		}
 		countMoves();
+	} else {
+		new Audio('sounds/disabled.wav').play();
 	}
 }
 // candyCrush(gameboard, cell, direction);
@@ -252,6 +256,7 @@ function showStar(p){
 		$('<div id="s'+sNum+'" class="star">').css({'top':'75vh'}).appendTo($('body'));
 		$('#s'+sNum).text(p);
 		$('#s'+sNum).animate({'top':'5vh'},1500).delay(200).animate({'top':'75vh'},300);
+		new Audio('sounds/success.wav').play();
 		setTimeout(function(){$('.star').first().remove();},2000);
 		points+=p;
 		$('#points').text(points);
